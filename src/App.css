@@ -1,13 +1,13 @@
 /* Genel Renk Değişkenleri (Değiştirmesi kolay olsun diye) */
 :root {
-  --bg-dark: #121212;
-  --panel-bg: #1e1e1e;
-  --text-main: #e0e0e0;
-  --text-dim: #aaa;
-  --accent-color: #646cff; /* O istediğin mor/mavi tonu */
+  --bg-dark: #2c3e50;
+  --panel-bg: #fdfeff;
+  --text-main: #f0ecec;
+  --text-dim: #262525;
+  --accent-color: #2c3e50; /* O istediğin mor/mavi tonu */
   --danger-color: #c0392b;
   --success-color: #27ae60;
-  --border-color: #333;
+  --border-color: #131111;
 }
 
 body {
@@ -88,7 +88,7 @@ body {
 
 .clear-button:hover {
   border-color: var(--text-dim);
-  color: white;
+  color: rgb(81, 79, 79);
 }
 
 .clear-all-button {
@@ -171,6 +171,7 @@ body {
 
 .task-text {
   flex: 1;
+  color: #2c3e50
 }
 
 .task-text strong {
