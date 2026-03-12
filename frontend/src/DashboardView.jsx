@@ -18,7 +18,8 @@ const DashboardView = ({tasks,            // Tüm görev listesi
   sortedTasks,      // Sıralanmış liste
   getStatusText,    // Kalan süre metni fonksiyonu
   sortBy,           // Sıralama türü (deadline/id)
-  setsortBy         // Sıralama türünü değiştirme
+  setsortBy,  
+  onLogout      // Sıralama türünü değiştirme
 }) => {
     return(
         <div className ="dashboard-container">
@@ -29,6 +30,14 @@ const DashboardView = ({tasks,            // Tüm görev listesi
                 <div className="bulk-actions">
                     <button className="clear-button" onClick={clearCompleted}>Tamamlananları Temizle</button>
                     <button className="clear-all-button" onClick={clearAll}>Tümünü Temizle</button>
+
+                    <button 
+                        className="clear-button" 
+                        onClick={onLogout} 
+                        style={{ marginTop: '20px', color: '#c0392b', borderColor: '#c0392b' }}
+                    >
+                        Oturumu Kapat
+                    </button>
                 </div>
             </div>
             {/*sağ panel içerisindekiler */}

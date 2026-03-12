@@ -4,7 +4,7 @@
   --panel-bg: #fdfeff;
   --text-main: #f0ecec;
   --text-dim: #262525;
-  --accent-color: #2c3e50; /* O istediğin mor/mavi tonu */
+  --accent-color: #2c3e50; 
   --danger-color: #c0392b;
   --success-color: #27ae60;
   --border-color: #131111;
@@ -32,7 +32,7 @@ body {
   display: flex;
   flex-direction: column;
   border-right: 1px solid var(--border-color);
-  position: fixed; /* Sayfa kaysa da sabit kalır */
+  position: fixed; 
   height: 100vh;
   box-sizing: border-box;
   z-index: 10;
@@ -63,7 +63,7 @@ body {
 }
 
 .bulk-actions {
-  margin-top: auto; /* Butonları en aşağı iter */
+  margin-top: auto;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -99,7 +99,7 @@ body {
 /* 3. SAĞ PANEL (İçerik Alanı) */
 .Right-Panel {
   flex: 1;
-  margin-left: 260px; /* Sidebar genişliği kadar boşluk bırakır */
+  margin-left: 260px; 
   padding: 40px;
   max-width: 900px;
 }

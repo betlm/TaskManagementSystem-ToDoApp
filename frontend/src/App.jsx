@@ -1,9 +1,11 @@
-import React, { useState, useEffect, use } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
 import DashboardView from './DashboardView';
+import LoginView from './LoginView';
 
 function App(){
+  const [userId, setUserId] = useState(null);
   const[tasks, setTasks] = useState([]);
   const[showmodal, setshowmodal] = useState(false);
   const[taskdata, settaskdata] = useState({title: '', description: '', deadline: ""});
@@ -11,35 +13,41 @@ function App(){
   const[currentTaskID, setcurrentTaskID] = useState(null);
   const[sortBy, setsortBy] = useState("deadline");
 
-  useEffect(() => {
-    fetchTasks();
-  }, []);
+  const baseUrl = "http://localhost:5093/api/Todo";
 
-  /* showmodal yeni görev ekleme modal'ının görünürlüğü
-     setshowmodal modal görünürlüğünü güncellemek için. yeni görev ekle butonuna basıldığı zaman
-     state true olur ve modal görünür.
-     
-     backendden gelen tasklar ilk satırdakinin içerisinde tutulup onun üzerinden işlem yapılacak 
-     
-     taskdata yeni eklemeler için kaydet denildiğinde alınıp backende gönderilecek
-     
-     useffect -> sayfa yüklendiğinde bir iş yapma emri */
+  useEffect(() => {
+    if (userId) {
+      fetchTasks();
+    }
+  }, [userId]);
+
 
   const fetchTasks = async () => {
     try {
-      const response = await axios.get("https://localhost:7204/api/Todo")
-      setTasks(response.data); // backendden gelen veriler taskların içine atılır bu kısımda kullanılması için
+      const response = await axios.get(`${baseUrl}/user/${userId}`);
+      setTasks(response.data);
     } catch (error) {
       console.error("Veriler Çekilemedi: ", error);
     }
   };
 
-  //fonksiyonlar kısmı
+  const handleLoginSuccess = (id) => {
+    localStorage.setItem("userId", id); // ID'yi tarayıcı hafızasına al
+    setUserId(id); 
+  };
 
-  const openAddModal = () => { //yeni görev ekleme modalını açar
-    setisEditing(false); //editing false olur çünkü ekleme yapacağız
-    settaskdata({ title: "",description: "", deadline: "" }); //formu temizler
-    setshowmodal(true); //modal açılır
+  const handleLogout = () => {
+    localStorage.removeItem("userId"); // Hafızayı temizle
+    setUserId(null); 
+    setTasks([]);
+  };
+
+  //fonksiyonlar 
+
+  const openAddModal = () => { 
+    setisEditing(false); 
+    settaskdata({ title: "",description: "", deadline: "" }); 
+    setshowmodal(true); 
   }
 
   const saveTask =async () => { //post için 
@@ -49,13 +57,13 @@ function App(){
       description: taskdata.description,
       deadline: taskdata.deadline,
       isDone: false
-    }; // yeni görevler için taskdata tekli görevleri aldı daha sonra array içine gönderecek
+    }; 
 
     try {
-      await axios.post("https://localhost:7204/api/Todo", newTask);
-      await fetchTasks(); //yeni görev eklendikten sonra güncel görevleri tekrar çekmek için
-      setshowmodal(false); //eklendikten sonra modalı kapattık
-      settaskdata({title: '', description: '', deadline: ""}); //formu temizledik
+      await axios.post(`${baseUrl}/${userId}`, newTask);
+      await fetchTasks(); 
+      setshowmodal(false); 
+      settaskdata({title: '', description: '', deadline: ""}); 
     } catch (error) {
       console.error("Görev Eklenemedi: ", error);
     }};
@@ -63,8 +71,8 @@ function App(){
   const deleteTask = async (id) => { //delete id
     if(window.confirm("Bu görevi silmek istediğinize emin misiniz?")) {
       try {
-        await axios.delete("https://localhost:7204/api/Todo/" + id); // id nin olduğu kısma gidip onu siliyor
-        fetchTasks(); // silindikten sonra güncel görevleri tekrar çekmek için
+        await axios.delete(`${baseUrl}/${id}`); 
+        fetchTasks(); 
       } catch (error) {
         console.error("Görev Silinemedi: ", error);
       }
@@ -74,9 +82,9 @@ function App(){
   const clearAll = async () => { //delete all
     if(window.confirm("Tüm görevleri silmek istediğinize emin misiniz?")) {
       try {
-        await axios.delete("https://localhost:7204/api/Todo/ClearAll");
-        setTasks([]); // tüm görevler silindikten sonra tasks dizisini boşalt
-        fetchTasks(); // silindikten sonra güncel görevleri tekrar çekmek için
+        await axios.delete(`${baseUrl}/ClearAll/${userId}`);
+        setTasks([]); 
+        fetchTasks(); 
       } catch (error) {
         console.error("Görevler Silinemedi: ", error);
       }
@@ -85,16 +93,16 @@ function App(){
     const clearCompleted = async () => { //Delete completed
       if(window.confirm("Tamamlanan görevleri silmek istediğinize emin misiniz?")) {
         try {
-          await axios.delete("https://localhost:7204/api/Todo/ClearCompleted");
-          setTasks(tasks.filter(t=> !t.isDone)); // tamamlanan görevler silindikten sonra tasks dizisini güncelle
-          fetchTasks(); // silindikten sonra güncel görevleri tekrar çekmek için
-        } catch (error) {
+          await axios.delete(`${baseUrl}/ClearCompleted/${userId}`);
+          setTasks(tasks.filter(t=> !t.isDone)); 
+          fetchTasks(); }
+          catch(error){
           console.error("Görevler Silinemedi: ", error);
         }}};
 
     const openEditModal = (task) =>{ //update
-      setisEditing(true); //düzenleme açılıyor
-      setcurrentTaskID(task.id); //güncellenecek görevin id'si tutuluyor
+      setisEditing(true); 
+      setcurrentTaskID(task.id); 
       settaskdata({ title: task.title,
          description: task.description, 
          deadline: task.deadline });
@@ -102,7 +110,17 @@ function App(){
     };
 
     const updateTask = async () => {
-      try{
+      try {
+      await axios.put(`${baseUrl}/${currentTaskID}`, taskdata);
+      await fetchTasks();
+      setshowmodal(false);
+      settaskdata({ title: '', description: '', deadline: "" });
+      setisEditing(false);
+      setcurrentTaskID(null);
+    } catch (error) {
+      console.error("Görev Güncellenemedi: ", error);
+    }
+      /*try{
         const updatedTask = {
           id: currentTaskID,
           title: taskdata.title,
@@ -118,30 +136,26 @@ function App(){
         setcurrentTaskID(null); // geçerli görev ID'sini sıfırla
       } catch (error) {
         console.error("Görev Güncellenemedi: ", error);
-      }}
-  /* openeditmodal düzenleme modalını açma fonksiyonu
-     setisediting true yapar yani düzenleme moduna geçer
-     setcurrenttaskid ile düzenlenecek görevin idsini tutarız
-     settaskdata ile o anki görevin bilgilerini alırız başlık açıklama deadline
-     setshowmodal true yaparak modalı açarız
-  */
+      }*/}
+  
 
      const toggleDone = async (task) => {
-      try{
+      /*try{
         const updatedStatus = !task.isDone;
         await axios.patch(`https://localhost:7204/api/Todo/${task.id}`, { isDone: updatedStatus });
         fetchTasks(); // durum güncellendikten sonra güncel görevleri tekrar çekmek için
       } catch (error) {
         console.error("Görev Durumu Güncellenemedi: ", error);
-      }
+      }*/
+     try {
+      await axios.patch(`${baseUrl}/${task.id}`);
+      fetchTasks();
+    } catch (error) {
+      console.error("Durum Güncellenemedi: ", error);
+    }
     };
     
-  /* toggledone görev tamamlandı işaretleme fonksiyonu
-     task parametresi ile o anki görevi alırız
-     updatedstatus ile o anki görevin isdone durumunu tersine çeviririz
-     axios.patch ile backendde sadece isdone durumu güncellenir
-     fetchtasks ile güncel görevler tekrar çekilir
-  */
+  
     const sortedTasks = [...tasks].sort((a,b) => {
       if(sortBy === "deadline") {return new Date(a.deadline) - new Date(b.deadline);}
       return b.id -a.id;});
@@ -163,30 +177,34 @@ function App(){
       return status.trim() + " kaldı";
     };
   
+    if (!userId) {
+    return <LoginView onLoginSuccess={handleLoginSuccess} />;
+  }
   
   return (<DashboardView 
     tasks={tasks}
-    showmodal={showmodal}
-    setshowmodal={setshowmodal}
-    taskdata={taskdata}
-    settaskdata={settaskdata}
-    isEditing={isEditing}
-    currentTaskID={currentTaskID}
-    openAddModal={openAddModal}
-    openEditModal={openEditModal}
-    saveTask={saveTask}
-    updateTask={updateTask}
-    deleteTask={deleteTask}
-    clearAll={clearAll}
-    clearCompleted={clearCompleted}
-    toggleDone={toggleDone}
-    sortedTasks={sortedTasks}
-    getStatusText={getStatusText}
-    sortBy={sortBy}
-    setsortBy={setsortBy}
+      showmodal={showmodal}
+      setshowmodal={setshowmodal}
+      taskdata={taskdata}
+      settaskdata={settaskdata}
+      isEditing={isEditing}
+      currentTaskID={currentTaskID}
+      openAddModal={openAddModal}
+      openEditModal={openEditModal}
+      saveTask={saveTask}
+      updateTask={updateTask}
+      deleteTask={deleteTask}
+      clearAll={clearAll}
+      clearCompleted={clearCompleted}
+      toggleDone={toggleDone}
+      sortedTasks={sortedTasks}
+      getStatusText={getStatusText}
+      sortBy={sortBy}
+      setsortBy={setsortBy}
+      onLogout={handleLogout}
   />
 );}
 
+
 export default App;
-  
 

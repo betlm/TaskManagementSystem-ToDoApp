@@ -1,16 +1,52 @@
-# React + Vite
+Gerçek Zamanlı Görev Yönetim Sistemi
+Swipe down for English version
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Bu proje, modern web teknolojileri kullanılarak geliştirilmiş, çok kullanıcılı yapıyı destekleyen profesyonel bir görev yönetim sistemidir. Uygulama, kullanıcının görevlerini teslim tarihlerine göre planlamasına ve yönetmesine olanak tanır.
 
-Currently, two official plugins are available:
+📌 Öne Çıkan Özellikler
+Kullanıcı Kayıt ve Giriş: SHA-512 şifreleme ile korunan güvenli kimlik doğrulama sistemi.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Kişiselleştirilmiş Dashboard: Her kullanıcının sadece kendi görevlerini gördüğü izole edilmiş çalışma alanı.
 
-## React Compiler
+Akıllı Süre Takibi: Görevlerin bitişine kalan süreyi gün, saat ve dakika bazında anlık hesaplama.
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+Sıralama Seçenekleri: Görevleri teslim tarihine veya eklenme sırasına göre tek tıkla organize etme.
 
-## Expanding the ESLint configuration
+Toplu İşlemler: Tamamlanan görevleri tek seferde temizleme veya tüm listeyi sıfırlama özelliği.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+🛠️ Kullanılan Teknolojiler
+Frontend: React.js & Vite.
+
+Backend: ASP.NET Core Web API.
+
+Veritabanı: Microsoft SQL Server & Entity Framework Core.
+
+İletişim: Axios üzerinden RESTful API entegrasyonu.
+
+Real-Time Task Management System (English)
+This project is a professional task management application developed with modern web technologies, supporting a multi-user environment. It allows users to plan and manage their tasks effectively based on deadlines.
+
+📌 Key Features
+Secure Authentication: User registration and login protected by SHA-512 password hashing.
+
+Personalized Dashboard: Isolated workspace where each user manages their private task list.
+
+Smart Deadline Tracking: Real-time calculation of remaining time (days, hours, minutes) for each task.
+
+Efficient Sorting: Organize tasks based on deadlines or creation date with a single click.
+
+Bulk Actions: Features to clear all completed tasks or reset the entire dashboard at once.
+
+📂 Project Structure
+Frontend: React components, custom CSS styling, and state management.
+
+Backend: RESTful controllers, business logic services, and database context.
+
+🚀 Kurulum / Installation
+Backend: dotnet run komutuyla API'yi başlatın.
+
+Frontend: npm install ve ardından npm run dev komutuyla arayüzü başlatın.
+
+🎓 Developer
+BETÜL MEREY
+
