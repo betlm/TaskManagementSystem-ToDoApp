@@ -1,5 +1,6 @@
-Gerçek Zamanlı Görev Yönetim Sistemi
-Swipe down for English version
+Gerçek Zamanlı Görev Yönetim Sistemi (Türkçe)
+
+(Swipe down for English version)
 
 Bu proje, modern web teknolojileri kullanılarak geliştirilmiş, çok kullanıcılı yapıyı destekleyen profesyonel bir görev yönetim sistemidir. Uygulama, kullanıcının görevlerini teslim tarihlerine göre planlamasına ve yönetmesine olanak tanır.
 
